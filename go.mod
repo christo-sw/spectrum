@@ -1,3 +1,3 @@
-module github.com/christo-sw/spectrum
+module spectrum
 
-go 1.20
+go 1.21

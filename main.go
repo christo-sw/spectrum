@@ -17,6 +17,28 @@ type Server struct {
 	Id   int    `json:"id"`
 }
 
+type Results struct {
+	Results []Result `json:"results"`
+}
+
+type Result struct {
+	Download Download `json:"download"`
+}
+
+type Download struct {
+	Bandwidth int     `json:"bandwidth"`
+	Bytes     int     `json:"bytes"`
+	Elapsed   int     `json:"elapsed"`
+	Latency   Latency `json:"latency"`
+}
+
+type Latency struct {
+	Iqm    float32 `json:"iqm"`
+	Low    float32 `json:"low"`
+	High   float32 `json:"high"`
+	Jitter float32 `json:"jitter"`
+}
+
 func main() {
 	fmt.Println("Doing speed test...")
 
@@ -54,15 +76,17 @@ func main() {
 	}
 
 	// Create out file directory if it does not exist
-	err = os.Mkdir(outFileDir, 0777)
+	err = os.MkdirAll(outFileDir, 0777)
 	if err != nil {
-		fmt.Println("Error creating out file directory:", err)
+		panicMessage := fmt.Sprintf("Error creating out file directory: %v", err)
+		panic(panicMessage)
 	}
 
 	// Write results to out file
 	err = os.WriteFile(outFilePath, finalResult, 0777)
 	if err != nil {
-		fmt.Println("Error writing to file:", err)
+		panicMessage := fmt.Sprintf("Error writing to file: %v", err)
+		panic(panicMessage)
 	}
 
 	fmt.Println("Done!")
